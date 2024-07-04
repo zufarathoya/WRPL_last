@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../../libs/mongodb';
+import { connectToDatabase } from '../../../libs/mongodb';
 // import React, { useState, useEffect } from 'react';
 
 

@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 const fetching = async (id) => {
   try {
@@ -20,7 +21,9 @@ const fetching = async (id) => {
   }
 };
 
-const Page = ({ message, csrfToken }) => {
+const BuyProductPage = ({ csrfToken }) => {
+  const { data: session, status} = useSession()
+  console.log(session)
   const [products, setProducts] = useState([]);
   const searchParams = useSearchParams()
   const productId = searchParams.get('productId')
@@ -30,10 +33,26 @@ const Page = ({ message, csrfToken }) => {
         setProducts(data);
       });
   }, [productId]);
-  const product = products[0]
-  console.log(product)
+  
+  const userId = session.user.id
+  const handleSubmit = async(event) => {
+    event.preventDefault()
+    const fromData  = new FormData(event.currentTarget)
+    const _id = fromData.get('selected_product_id')
+    const quantity = parseInt(fromData.get('quantity'))
+
+    const response = await fetch('../../api/pelanggan/addToCart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ _id, userId, quantity }),
+    })
+  }
+
   return (
     <div className="container mx-auto p-4">
+        <h1>{userId}</h1>
         <h1 className="text-2xl font-bold mb-4">Buy Product</h1>
         
         <div className="bg-white shadow-md rounded-lg p-4">
@@ -41,15 +60,14 @@ const Page = ({ message, csrfToken }) => {
         <div key={product._id}>
             <h2 className="text-lg font-semibold mb-2">{product.nama}</h2>
             <p className="text-gray-700 mb-2">ID: {product._id}</p>
-            <p className="text-gray-700 mb-2">Deskripsi: {product.deskripsi}</p>
+            <p className="text-gray-700 mb-2">Description: {product.deskripsi}</p>
             <p className="text-gray-700 mb-2">Price: {product.harga}</p>
             <p className="text-gray-700 mb-2">Stock: {product.stok}</p>
             <p className="text-gray-700 mb-2">Category: {product.kategori}</p>
 
-            <form method="post" action="/cart">
+            <form method="post" onSubmit={handleSubmit}>
                 <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken} />
                 <input type="hidden" name="selected_product_id" value={product._id} />
-                
                 <label htmlFor="quantity">Quantity:</label>
                 <input 
                     type="number" 
@@ -63,7 +81,6 @@ const Page = ({ message, csrfToken }) => {
                 
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Buy</button>
             </form>
-            <p className="text-green-500">{message}</p>
         </div>
         ))}
         </div>
@@ -72,4 +89,4 @@ const Page = ({ message, csrfToken }) => {
   )
 }
 
-export default Page
+export default BuyProductPage

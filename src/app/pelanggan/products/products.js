@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../../libs/mongodb';
+import { connectToDatabase } from '../../../libs/mongodb';
 
 // export default async function handler(req, res) {
 //     try {

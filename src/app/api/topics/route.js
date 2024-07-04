@@ -3,8 +3,9 @@ import { connectToDatabase } from '../../../libs/mongodb';
 import { NextResponse } from "next/server";
 
 async function fetchProducts() {
-    const { db } = await connectToDatabase();
-    const collection = db.collection('products');
+    const client = await connectToDatabase();
+    const db = client.db('dbSales');
+    const collection = db.collection('product');
     const products = await collection.find().toArray();
     return products;
 }

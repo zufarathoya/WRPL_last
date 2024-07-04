@@ -9,6 +9,7 @@ export async function connectToDatabase() {
     if (!client.isConnected) {
         await client.connect();
     }
-    const db = client.db('Gudang');
-    return { db, client };
+    // const db = client.db('Gudang');
+    // return { db, client };
+    return client
 }

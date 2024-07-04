@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Link from "next/link";
+import { signIn } from "next-auth/react"
 
 const fetching = async () => {
     try {
@@ -38,7 +39,7 @@ const getUniqueCategories = (products) => {
     return Array.from(new Set(categories)); // Convert the Set back to an array
 };
 
-export default function ProductsPage() {
+export default function ProductsPage({userId}) {
     const [products, setProducts] = useState([]);
     const [uniqueCategories, setUniqueCategories] = useState([]);
 
@@ -50,13 +51,18 @@ export default function ProductsPage() {
             setUniqueCategories(getUniqueCategories(data));
         });
     }, []);
-    
+    console.log(products)
     // const buyProduct = () => {
     //     redirect('../buy_product')
     // } 
 
     return (
     <div className="container mx-auto p-4">
+        <div>{userId}</div>
+        <button 
+            className="bg-black rounded-md px-3 text-sm h-7 cursor-pointer"
+            onClick={() => signIn()}
+        ></button>
         <h1 className="text-2xl font-bold mb-4">Product List</h1>
         <form className="mb-4">
             <label htmlFor="kategori" className="block text-sm font-medium text-gray-700">Sort by Category:</label>
@@ -87,7 +93,8 @@ export default function ProductsPage() {
                         </form>
                     </div> */}
                     <div className="absolute bottom-0 right-0 p-2 py-4">
-                        <Link href={`/buy_product?productId=${product._id}`} passHref>
+                        <Link className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700" 
+                            href={`/pelanggan/buy_product?productId=${product._id}`} passHref>
                             {/* <a className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"> */}
                                 Buy
                             {/* </a> */}
