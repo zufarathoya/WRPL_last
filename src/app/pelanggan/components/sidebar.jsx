@@ -6,10 +6,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
-const handleLogout = (router) => {
-  router.push('../authentication/login')
-}
+import { signOut } from "next-auth/react";
+import LogoutButton from './logoutButton'
 
 const menuItems = [
   {name: 'Home', path: ''},
@@ -26,7 +24,12 @@ const Sidebar = () => {
     'h-screen flex justify-between flex-col bg-gray-800 text-white',
     {'w-64': show, 'w-16': !show}
   )
-
+  // const handleLogout = () => {
+  //   signOut({
+  //     callbackUrl: "/authentication/login"
+  //   })
+  // }
+  
   return (
     <div className={`h-screen flex justify-between flex-col bg-gray-800 text-white transition-width duration-300 ${show ? 'w-64' : 'w-16'}`}>  
       <div className="p-6">
@@ -47,12 +50,9 @@ const Sidebar = () => {
           ))}
         </ul>
       </div>
-      <div className="p-2">
-        <button onClick={handleLogout(router)} className="w-full flex items-center justify-center py-2 bg-red-500 hover:bg-red-600 transition-colors duration-150 rounded">
-          <LogoutIcon />
-          {show && <span className="ml-2">Logout</span>}
-        </button>
-      </div>
+        <div className="p-2">
+          <LogoutButton show={show} />
+        </div>
     </div>
   )
 }

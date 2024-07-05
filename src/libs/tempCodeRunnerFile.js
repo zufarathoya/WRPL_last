@@ -1,1 +1,0 @@
-'mongodb+srv://zufarathoyabahar:9y8lY9hiH5GY4YCW@wrpl.qkwukhm.mongodb.net/'

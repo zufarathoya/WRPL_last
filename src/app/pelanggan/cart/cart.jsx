@@ -2,6 +2,7 @@
 import React from 'react'
 import { RemoveFromQueue } from '@mui/icons-material'
 import Remove from './remove'
+import Checkout from './checkout'
 
 const Cart = ({cartItems, userId, totalHargaKeranjang}) => {
   const onProceedToCheckout = () => {
@@ -62,17 +63,9 @@ const Cart = ({cartItems, userId, totalHargaKeranjang}) => {
         </ul>
       </div>
 
-      <div className="mt-4 flex justify-between">
-        <button onClick={onContinueShopping} className=" text-white py-2 px-4 rounded cursor-default">
-          
-        </button>
-        <form onSubmit={onProceedToCheckout}>
-          <input type="hidden" name="_user_id" value={userId} />
-          <input type="hidden" name="total_harga" value={totalHargaKeranjang} />
-          <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">
-            Proceed to Checkout
-          </button>
-        </form>
+      <div className="mt-4 flex justify-end">
+
+        <Checkout userId={userId} totalHargaKeranjang={totalHargaKeranjang}/>
       </div>
     </div>
   )
